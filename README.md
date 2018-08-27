@@ -58,13 +58,13 @@
 
 ## 安装步骤 ##
 
-	git clone https://github.com/lin-xin/vue-manage-system.git      // 把模板下载到本地
+	git clone https://github.com/185942983/vue-3D-resource.git      // 把模板下载到本地
 	cd vue-manage-system    // 进入模板目录
 	npm install         // 安装项目依赖，等待安装完成之后
 
 ## 本地开发 ##
 
-	// 开启服务器，浏览器访问 http://localhost:8080
+	// 开启服务器，浏览器访问 http://localhost:8031
 	npm run dev
 
 ## 构建生产 ##
@@ -72,50 +72,6 @@
 	// 执行构建命令，生成的dist文件夹放在服务器下即可访问
 	npm run build
 
-## 组件使用说明与演示 ##
-
-### vue-schart ###
-vue.js封装sChart.js的图表组件。访问地址：[vue-schart](https://github.com/linxin/vue-schart)
-<p><a href="https://www.npmjs.com/package/vue-schart"><img src="https://img.shields.io/npm/dm/vue-schart.svg" alt="Downloads"></a></p>
-
-```JavaScript
-<template>
-    <div>
-        <schart :canvasId="canvasId"
-				:type="type"
-				:width="width"
-				:height="height"
-				:data="data"
-				:options="options"
-		></schart>
-    </div>
-</template>
-	
-<script>
-    import Schart from 'vue-schart';        // 导入Schart组件
-    export default {
-        data: function(){
-            return {
-                canvasId: 'myCanvas',       // canvas的id
-                type: 'bar',                // 图表类型
-                width: 500,
-                height: 400,
-                data: [
-                    {name: '2014', value: 1342},
-                    {name: '2015', value: 2123},
-                    {name: '2016', value: 1654},
-                    {name: '2017', value: 1795},
-                ],
-                options: {                  // 图表可选参数
-                    title: 'Total sales of stores in recent years'
-                }
-            }
-        },
-        components: {
-            Schart
-        }
-    }
-</script>
 ```
 
 ### element-ui ###
@@ -184,10 +140,6 @@ import 'element-ui/lib/theme-default/index.css';    // 默认主题
 第三步：打开 src/components/common/Sidebar.vue 文件，找到 el-menu 标签，把 background-color/text-color/active-text-color 属性去掉即可。
 
 ## 项目截图 ##
-### 默认皮肤 ###
+### 登录 ###
 
-![Image text](https://github.com/lin-xin/manage-system/raw/master/screenshots/wms1.png)
-
-### 浅绿色皮肤 ###
-
-![Image text](https://github.com/lin-xin/manage-system/raw/master/screenshots/wms2.png)
+![Image text](https://github.com/185942983/vue-3D-resource/tree/master/static/img/login.png)
