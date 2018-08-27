@@ -59,7 +59,7 @@
 ## 安装步骤 ##
 
 	git clone https://github.com/185942983/vue-3D-resource.git      // 把模板下载到本地
-	cd vue-manage-system    // 进入模板目录
+	cd vue-3D-resource    // 进入模板目录
 	npm install         // 安装项目依赖，等待安装完成之后
 
 ## 本地开发 ##
@@ -139,7 +139,3 @@ import 'element-ui/lib/theme-default/index.css';    // 默认主题
 
 第三步：打开 src/components/common/Sidebar.vue 文件，找到 el-menu 标签，把 background-color/text-color/active-text-color 属性去掉即可。
 
-## 项目截图 ##
-### 登录 ###
-
-![Image text](https://github.com/185942983/vue-3D-resource/tree/master/static/img/login.png)
