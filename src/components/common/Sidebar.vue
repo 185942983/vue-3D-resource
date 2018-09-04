@@ -36,6 +36,25 @@
                         title: '系统首页'
                     },
                     {
+                        icon: 'el-icon-share',
+                        index: '2',
+                        title: 'd3图表',
+                        subs: [
+                            {
+                                index: 'relation',
+                                title: 'd3关系图'
+                            },
+                            {
+                                index: 'd3Pie',
+                                title: 'd3饼图'
+                            },   
+                            {
+                                index: 'd3Chord',
+                                title: 'd3弦图,树图'
+                            },                          
+                        ]
+                    }/*,
+                    {
                         icon: 'el-icon-tickets',
                         index: 'table',
                         title: '基础表格'
@@ -82,7 +101,7 @@
                         icon: 'el-icon-warning',
                         index: 'permission',
                         title: '权限测试'
-                    },
+                    }*/,
                     {
                         icon: 'el-icon-error',
                         index: '404',

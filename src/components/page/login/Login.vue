@@ -31,9 +31,9 @@
 </template>
 
 <script>
-    import $ from 'jquery'
     import Cat from '@/components/common/catAnimation/catAnimation'
     export default {
+        name: "login",
         data: function(){
             return {
                 ruleForm: {

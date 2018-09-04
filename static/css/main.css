@@ -26,7 +26,7 @@ a {
     right: 0;
     top: 70px;
     bottom: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
     -webkit-transition: left .3s ease-in-out;
     transition: left .3s ease-in-out;
     background: #f0f0f0;
@@ -35,6 +35,7 @@ a {
 .content {
     width: auto;
     padding: 40px;
+    height: calc(100% - 110px);
 }
 
 .content-collapse {

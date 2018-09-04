@@ -1,7 +1,7 @@
 {
   "name": "vue-3D-resource",
   "version": "3.1.0",
-  "description": "基于Vue.js 2.x系列 + element-ui 3D技术实战例子",
+  "description": "基于Vue.js 2.x系列 + element-ui + D3 技术实战例子",
   "author": "fufan <185942983@qq.com>",
   "private": true,
   "scripts": {
@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.15.3",
     "babel-polyfill": "^6.23.0",
+    "d3": "^4.13.0",
     "element-ui": "2.3.3",
     "jquery": "^3.3.1",
     "mavon-editor": "^2.5.4",
@@ -40,6 +41,8 @@
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
     "node-notifier": "^5.1.2",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",

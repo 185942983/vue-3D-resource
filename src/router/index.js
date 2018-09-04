@@ -20,6 +20,21 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
+                    path: '/relation',
+                    component: resolve => require(['../components/page/relation/relation.vue'], resolve),
+                    meta: { title: 'd3关系图' }
+                },
+                {
+                    path: '/d3Pie',
+                    component: resolve => require(['../components/page/d3Pie/d3Pie.vue'], resolve),
+                    meta: { title: 'd3饼图' }
+                },
+                {
+                    path: '/d3Chord',
+                    component: resolve => require(['../components/page/d3Chord/d3Chord.vue'], resolve),
+                    meta: { title: 'd3弦图,树图' }
+                }/*,
+                {
                     path: '/table',
                     component: resolve => require(['../components/page/BaseTable.vue'], resolve),
                     meta: { title: '基础表格' }
@@ -69,7 +84,7 @@ export default new Router({
                     path: '/permission',
                     component: resolve => require(['../components/page/Permission.vue'], resolve),
                     meta: { title: '权限测试', permission: true }
-                }
+                }*/
             ]
         },
         {
