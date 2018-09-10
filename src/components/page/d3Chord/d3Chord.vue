@@ -14,6 +14,14 @@
 		  	</div>
 		  </el-col>
 		</el-row>
+ 		<el-row :gutter="20">
+		  <el-col :span="24">
+		  	<div class="container">
+		  		<h3>可折叠树结构</h3>
+		  		<div id="collapseTree" class="chart1"></div>
+		  	</div>
+		  </el-col>
+		</el-row>
  	</div>
 </template>
 
@@ -32,8 +40,11 @@
 	  			[3000, 8012, 5531, 500, 400],
 	  			[3540, 4310, 1500, 1900, 300]
 	  		],
-	  		width: 0,
-	  		height: 0
+	  		treeMap: null,
+	  		treeRoot: null,
+	  		treeSvg: null,
+	  		index: 0,
+	  		duration: 750
 	  	}
 	  },
 	  methods: {
@@ -59,7 +70,7 @@
 	  		//定义一个颜色函数 返回离散的颜色值
 	  		const color = d3.scaleOrdinal()
 	  										.domain(d3.range(5))
-	  										.range(['#e83f68','#e88f3f','#35b4ff','#d9308b','#464cde'])		
+	  										.range(['#A7E2CB','#88D7D5','#A7ACE2','#CB8362','#EAD9F2'])		
 	  		//定义一个组元素，包含节点和弦
 	  		const gChord = svg.append('g')
 	  								 .attr('transform', 'translate(' + width/2 + ',' + height/2 +')')
@@ -148,29 +159,25 @@
 			  				.style('opacity', opacity)
 	  	},
 	  	initTree() {
-	
+				const width = $('#tree').width() -100
+		    const height = $('#tree').height()		
 	  		d3.json('static/city.json', (error, data) => {
 
-					const treeSvg = d3.select('#tree')
+					const svg = d3.select('#tree')
 		  									.append('svg')
 		  									.attr('width', '100%')
 		  									.attr('height', '100%')
-		  		const container = treeSvg.append('g')
+		  		const container = svg.append('g')
 	  												 .attr("transform", "translate(40,0)");		
 
 					const root = d3.hierarchy(data, d=> d.children)
 					const treeLayout = d3.tree()
-						  								 .size([this.height, this.width])
+						  								 .size([height, width])
 						  								 .separation((a,b) => {//设定相邻接点直接的间隔
 						  									 		return (a.parent == b.parent ? 1: 2)
 						  									}) 
 		  		const treeData = treeLayout(root)	  				
 	  			// console.log(data)	  	
-	  			//给第一个节点添加初始坐标x0和y0
-	  			data.x0 = this.height/2
-	  			data.y0 = 0
-
-	  			// this.redraw(container,data)
 
 	  			const nodes = treeData.descendants()
 	  			const links = treeData.links()
@@ -209,11 +216,6 @@
 	  					.style('fill', '#111')
 	  					.style('font-size', '12px')
 	  					.text(d=> d.data.name)
-
-	  			node.selectAll('.parentNode')
-	  					.on('click', (d,i)=>{
-	  							this.toggle(d)
-	  					})
 	  		})
 	  	},
 	  	linkHorizontal(d){//水平对角线
@@ -222,7 +224,7 @@
 	  	linkVertical(d){//垂直对角线
 	  		return `M ${d.source.y},${d.source.x} C ${(d.source.y+d.target.y)/2},${d.source.x} ${(d.source.y+d.target.y)/2} ${d.target.x}, ${d.target.y},${d.target.x}`
 	  	},
-	  	toggle(d){//切换开关 d为被单击的节点
+	  	click(d){//切换开关 d为被单击的节点
 	  		if(d.children){
 	  				d._children = d.children
 	  				d.children =  null
@@ -230,122 +232,174 @@
 	  			d.children = d._children
 	  			d._children = null
 	  		}
+	  		this.update(d)
 	  	},
-	  	redraw(container,source){//重绘函数
-				  		
-				const root = d3.hierarchy(source, d=> d.children)
-				const treeLayout = d3.tree()
-					  								 .size([this.height, this.width])
-					  								 .separation((a,b) => {//设定相邻接点直接的间隔
-					  									 		return (a.parent == b.parent ? 1: 2)
-					  									}) 
-	  		const treeData = treeLayout(root)	  		
-				const nodes = treeData.descendants()
-	  		const links = treeData.links()
+	  	initCollapseTree(){
+	  		// 设置图表的尺寸和边缘
+	  		const margin = {top: 20,right: 90,bottom: 30, left: 90},
+	  					width = $('#collapseTree').width() - margin.left -margin.right,
+	  					height = $('#collapseTree').height() - margin.top -margin.bottom;
+	  		// 将svg对象附加到页面主体 
+	  		//将一个“组”元素附加到“svg” 
+	  		//将“组”元素移动到左上角
+	  		this.treeSvg = d3.select('#collapseTree')
+	  									.append('svg')
+	  									.attr('width', '100%')
+	  									.attr('height', '100%')
+	  									.call(d3.zoom()
+	  										// 设置缩放区域为0.1-100倍
+	  													.scaleExtent([0.1,100])
+	  													.on('zoom', _ => {
+	  														let scale = d3.event.transform.k,
+	  																translate = [d3.event.transform.x, d3.event.transform.y]
+	  																// console.log(scale,translate)
+																this.treeSvg.attr('transform', `translate(${translate[0] + margin.left},${translate[1] + margin.top}) scale(${scale})`)
+	  													})
+											)
+											.on('dblclick.zoom', null)
+	  									.append('g')
+	  									.attr('transform', `translate(${margin.left},${margin.top})`)
 
-	  		//重新计算节点的y坐标
-	  		nodes.forEach(d=> { 
-	  			d.y = d.depth * 180
-	  			//每一次调用重绘函数，都将当前节点的位置保存下来
-	  			d.x0 = d.x 
-	  			d.y0 = d.y
+	  		// 声明树布局并分配大小
+	  		this.treeMap = d3.tree().size([height,width])
+	  		// 分配父节点，子节点，高度，深度
+	  		d3.json('static/city.json', (error,treeData)=>{
+	  				this.treeRoot = d3.hierarchy(treeData, d=> d.children)
+	  				this.treeRoot.x0 = height/2
+	  				this.treeRoot.y0 = 0
+	  				console.log(this.treeRoot)
+	  				// 从第二层起折叠子节点
+	  				this.treeRoot.children.forEach(this.collapse)
+
+	  				this.update(this.treeRoot)
 	  		})
-
-	  		//获取节点的update部分
-	  		const nodeUpdate = container.selectAll('.node')
-	  													.data(nodes, d=> {return d.data.name})
-	  		//获取节点的enter部分
-	  		const nodeEnter = nodeUpdate.enter()
-	  		//获取节点的exit部分
-	  		const nodeExit = nodeUpdate.exit()
-
-	  		//在给enter部分添加新的节点时，添加监听器 ，应用开关切换函数
-	  		const enterNodes = nodeEnter.append('g')
-								 .attr('class', 'node')
-	  						 .attr('transform', d=> {
-										// return `translate(${source.y0},${source.x0})` 
-										return `translate(${d.y},${d.x})` 
-									})	 
-	  						 .on('click', d=> {
-	  						 		this.toggle(d)
-	  						 		this.redraw(container,d)
-	  						 })
-				enterNodes.append('circle')
-		  					.attr('r', 4.5)
-		  					.attr('cursor', 'pointer')
-		  					.style('fill', d => {
-		  						return d._children? '#409EFF': '#fff'
-		  					})
-		  					.style('stroke', '#409EFF')
-  			enterNodes.append('text')
-		  					.attr('dy', '.35em' )
-		  					.attr('x', d=> {return d.children||d._children? -8: 8})
-		  					.style('text-anchor', d=> {return d.children||d._children?'end':'start'})
-		  					.style('fill', '#111')
-		  					.style('font-size', '12px')
-		  					.text(d=> d.data.name)	
-		  					.style('fill-opacity', 1) 
-		  	const updateNodes = nodeUpdate.transition()
-		  																.duration(500)
-		  																.attr('transform', d=>{
-		  																	return `translate(${d.y},${d.x})` 
-		  																}) 
-		  	updateNodes.select('circle')
-		  						 .attr('r', 4.5)
-		  						 .style('fill', d=>{
-		  						 	return d._children?'#409EFF':'#fff'
-		  						 })	
-		  	updateNodes.select('text')
-		  					   .style('fill-opacity', 1) 	 	
-		  	const exitNodes = nodeExit.transition()
-		  														.duration(500)
-		  														.attr('transform', d=> {
-		  															return `translate(${d.source.y},${d.source.x})` 
-		  														})	
-		  														.remove()	  
-				exitNodes.select('circle')
-		  						 .attr('r', 0)
-		  	exitNodes.select('text')
-		  					   .style('fill-opacity', 0) 		
-
-		  	//处理连线的update，enter，exit3部分
-		  	const linkUpdate = container.selectAll('.link')
-		  																 .data(links, d=> { return d.target.data.name})
-		  	const linkEnter = linkUpdate.enter()
-		  	const linkExit = linkUpdate.exit()
-
-		  	linkEnter.insert('path', '.node')
-		  					 .attr('class', 'link')
-								 .style('fill', 'none')
-	  						 .style('stroke', '#409EFF')		  					 
-		  					 .attr('d', d=> {
-		  					 		const o = {x: source.x0 ,y: source.y0 }
-		  					 		return this.linkVertical({source: o, target: o})
+	  	},
+	  	// 把节点和所有的子节点都折叠起来
+	  	collapse(d){
+	  		if(d.children){
+	  				d._children = d.children
+	  				d._children.forEach(this.collapse)
+	  				d.children = null
+	  		}
+	  	},
+	  	update(source){
+	  		// 为节点分配x和y的位置
+	  		const treeData = this.treeMap(this.treeRoot)
+	  		// 计算新的树布局
+	  		const nodes = treeData.descendants()
+	  		const links = treeData.descendants().slice(1)
+	  		// 每层之间间隔180
+	  		nodes.forEach(d => {
+	  			d.y = d.depth*180
+	  		})
+	  		// *****************节点部分****************
+	  		const node = this.treeSvg.selectAll('g.node')
+	  														 .data(nodes, d=>{
+	  														 		return d.id || (d.id = ++this.index)
+	  														 })
+	  		const nodeEnter = node.enter()
+	  													 .append('g')
+	  													 .attr('class', 'node')
+	  													 .attr('transform', d=>{
+	  													 	 return `translate(${source.y0},${source.x0})`
+	  													 })
+	  													 .on('click', this.click)
+	  		// 为节点添加圆
+	  		nodeEnter.append('circle')
+	  						 .attr('class', 'node')
+	  						 .attr('r', 1e-6)
+	  						 .style('stroke', 'steelblue')
+	  						 .style('stroke-width', '3px')
+	  						 .style('fill', d => {
+		  							return d._children? 'lightsteelblue': '#fff'
 		  					 })
-		  					 .transition()
-		  					 .duration(500)
-		  					 .attr('d', this.linkVertical)
-		  	linkUpdate.transition()
-		  						.duration(500)
-		  						.attr('d', this.linkVertical)
-		    linkExit.transition()
-		    				.duration(500)
-		    				.attr('d', d=>{
-										const o = {x: d.source.x ,y: d.source.y }
-		  					 		return this.linkVertical({source: o, target: o})		    					
-		    				})
-		    				.remove()
-		  																													 
+		  	// 为节点添加标签
+		  	nodeEnter.append('text')
+		  					 .attr('dy', '.35em')
+		  					 .attr('x', d=> {
+		  					 		return d.children||d._children? -13: 13
+		  					 })
+		  					 .attr('text-anchor', d=>{
+		  					 		return d.children||d._children? 'end': 'start'
+		  					 })
+		  					 .style('font', '12px sans-serif')
+		  					 .text(d=> d.data.name)
+		  	const nodeUpdate = nodeEnter.merge(node)
+		  	// 转换到节点的适当位置
+		  	nodeUpdate.transition()
+		  						.duration(this.duration)
+		  						.attr('transform', d=>{
+		  							return `translate(${d.y},${d.x})`
+		  						})
+		  	// 更新节点属性和样式
+		  	nodeUpdate.selectAll('circle.node')
+		  						.attr('r', 10)
+		  						.style('fill', d=>{
+		  							return d._children?'lightsteelblue': '#fff'
+		  						})
+		  						.attr('cursor', 'pointer')
+		  	// 删除任何exit节点
+		  	const nodeExit = node.exit().transition()
+		  											 .duration(this.duration)
+		  											 .attr('transform', d=>{
+		  											 		return `translate(${source.y},${source.x})`
+		  											 })
+		  											 .remove()
+		  	// 在exit时，将节点圆的大小减少为0
+		  	nodeExit.selectAll('circle')
+		  					.attr('r', 1e-6)
+		  	// 在exit时减少文本标签的不透明度
+		  	nodeExit.selectAll('text')
+		  					.style('fill-opacity', 1e-6)
+
+ 				// ****************** 连接线部分 ******************
+ 				const link = this.treeSvg.selectAll('path.link')
+ 													        .data(links, d=> d.id)
+ 		    const linkEnter = link.enter()
+ 		    											.insert('path', 'g')
+ 		    											.attr('class', 'link')
+ 		    											.style('fill', 'none')
+ 		    											.style('stroke', '#ccc')
+ 		    											.style('stroke-width', '2px')
+ 		    											.attr('d', d=>{
+																const o = {x: source.x0 ,y: source.y0 }
+		  					 								return this.diagonal(o,o) 		    												
+ 		    											})
+ 		    const linkUpdate = linkEnter.merge(link)
+ 		    linkUpdate.transition()
+ 		    					.duration(this.duration)
+ 		    					.attr('d', d=>{
+ 		    						return this.diagonal(d, d.parent)
+ 		    					})
+ 		    const linkExit = link.exit()
+ 		    										 .transition()
+ 		    										 .duration(this.duration)
+ 		    										 .attr('d' , d=>{
+ 		    										 		const o = {x: source.x ,y: source.y }
+		  					 								return this.diagonal(o,o) 		
+ 		    										 })
+ 		    										 .remove()
+ 		    //储存旧的位置为了转换
+ 		    nodes.forEach(d=>{ 
+ 		    	d.x0 = d.x
+ 		    	d.y0 = d.y
+ 		    })
+	  	},
+	  	// 从父节点到子节点重新建立一个曲线（对角线）路径
+	  	diagonal(s,d){
+	  			return `M ${s.y} ${s.x} 
+	  							C ${(s.y+d.y)/2} ${s.x},
+	  							  ${(s.y+d.y)/2} ${d.x},
+	  							  ${d.y} ${d.x}`
 	  	}
 	  },
 	  created() {
 	  	// this.color = d3.scaleOrdinal(d3.schemeCategory20c)
 	  },
-	  mounted() {
-			this.width = $('#tree').width() -100
-		  this.height = $('#tree').height()			  	
+	  mounted() {		  	
 	  	this.initChord()
 	  	this.initTree()
+	  	this.initCollapseTree()
 	  }
 }
 </script>
@@ -360,5 +414,14 @@
     .chart{
     	height: 300px;
     }
+    .chart1{
+    	height: 500px;
+    }
+    .el-row {
+    	margin-bottom: 20px;
+	    &:last-child {
+	      margin-bottom: 0;
+	    }
+  	}
 	}
 </style>

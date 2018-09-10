@@ -273,7 +273,7 @@
 	  				})								  					
 	  	},
 	  	color(i) {
-	  		const rgbs = ['#e83f68','#e88f3f','#35b4ff','#464cde','#ebc250','#52f3e3','#9380f4','#fffb0d','#f0786a','#d9308b']
+	  		const rgbs = ['#A7E2CB','#88D7D5','#A7ACE2','#CB8362','#EAD9F2','#AFD279','#EECFCD','#6A97CD','#E2F1D5']
 	  		return rgbs[i]
 	  	}
 	  },
