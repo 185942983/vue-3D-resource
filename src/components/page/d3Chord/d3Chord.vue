@@ -97,6 +97,7 @@
 	  		gGroups.append('text')
 	  					 .attr('class', 'group-text')
 	  					 .attr('dy', '.35em')
+	  					 .style('fill', d => color(d.index))
 	  					 .attr('transform', d => {
 	  					 		let result  = 'rotate('+ (d.angle * 180 / Math.PI) +') '
 	  					 		//平移到外半径之外
@@ -213,7 +214,7 @@
 	  					.attr('dy', '.35em' )
 	  					.attr('dx', d=> {return d.children? -8: 8})
 	  					.style('text-anchor', d=> {return d.children?'end':'start'})
-	  					.style('fill', '#111')
+	  					.style('fill', '#fff')
 	  					.style('font-size', '12px')
 	  					.text(d=> d.data.name)
 	  		})
@@ -293,11 +294,11 @@
 	  			d.y = d.depth*180
 	  		})
 	  		// *****************节点部分****************
-	  		const node = this.treeSvg.selectAll('g.node')
+	  		let node = this.treeSvg.selectAll('g.node')
 	  														 .data(nodes, d=>{
 	  														 		return d.id || (d.id = ++this.index)
 	  														 })
-	  		const nodeEnter = node.enter()
+	  		let nodeEnter = node.enter()
 	  													 .append('g')
 	  													 .attr('class', 'node')
 	  													 .attr('transform', d=>{
@@ -323,8 +324,9 @@
 		  					 		return d.children||d._children? 'end': 'start'
 		  					 })
 		  					 .style('font', '12px sans-serif')
+		  					 .style('fill', '#fff')
 		  					 .text(d=> d.data.name)
-		  	const nodeUpdate = nodeEnter.merge(node)
+		  	let nodeUpdate = nodeEnter.merge(node)
 		  	// 转换到节点的适当位置
 		  	nodeUpdate.transition()
 		  						.duration(this.duration)
@@ -339,7 +341,7 @@
 		  						})
 		  						.attr('cursor', 'pointer')
 		  	// 删除任何exit节点
-		  	const nodeExit = node.exit().transition()
+		  	let nodeExit = node.exit().transition()
 		  											 .duration(this.duration)
 		  											 .attr('transform', d=>{
 		  											 		return `translate(${source.y},${source.x})`
@@ -353,9 +355,9 @@
 		  					.style('fill-opacity', 1e-6)
 
  				// ****************** 连接线部分 ******************
- 				const link = this.treeSvg.selectAll('path.link')
+ 				let link = this.treeSvg.selectAll('path.link')
  													        .data(links, d=> d.id)
- 		    const linkEnter = link.enter()
+ 		    let linkEnter = link.enter()
  		    											.insert('path', 'g')
  		    											.attr('class', 'link')
  		    											.style('fill', 'none')
@@ -365,13 +367,13 @@
 																const o = {x: source.x0 ,y: source.y0 }
 		  					 								return this.diagonal(o,o) 		    												
  		    											})
- 		    const linkUpdate = linkEnter.merge(link)
+ 		    let linkUpdate = linkEnter.merge(link)
  		    linkUpdate.transition()
  		    					.duration(this.duration)
  		    					.attr('d', d=>{
  		    						return this.diagonal(d, d.parent)
  		    					})
- 		    const linkExit = link.exit()
+ 		    let linkExit = link.exit()
  		    										 .transition()
  		    										 .duration(this.duration)
  		    										 .attr('d' , d=>{
@@ -410,6 +412,10 @@
     	font-size: 1rem;
     	font-weight: normal;
     	text-align: center;
+    	background: rgba(26,90,125,0.5);
+	    color: #0dcebd;
+	    margin: 0 -30px 10px;
+	    line-height: 40px;
     }
     .chart{
     	height: 300px;
