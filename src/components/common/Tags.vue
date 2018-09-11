@@ -95,7 +95,7 @@
         position: relative;
         height: 30px;
         overflow: hidden;
-        background: #fff;
+        /*background: #fff;*/
         padding-right: 120px;
     }
 
@@ -114,18 +114,14 @@
         cursor: pointer;
         height: 23px;
         line-height: 23px;
-        border: 1px solid #e9eaec;
-        background: #fff;
+        /*border: 1px solid #e9eaec;
+        background: #fff;*/
         padding: 0 5px 0 12px;
         vertical-align: middle;
         color: #666;
         -webkit-transition: all .3s ease-in;
         -moz-transition: all .3s ease-in;
         transition: all .3s ease-in;
-    }
-
-    .tags-li:not(.active):hover {
-        background: #f8f8f8;
     }
 
     .tags-li.active {
@@ -155,7 +151,7 @@
         text-align: center;
         width: 110px;
         height: 30px;
-        background: #fff;
+        /*background: #fff;*/
         box-shadow: -3px 0 15px 3px rgba(0, 0, 0, .1);
         z-index: 10;
     }

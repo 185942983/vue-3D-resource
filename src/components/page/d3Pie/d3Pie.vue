@@ -294,6 +294,10 @@
     	font-size: 1rem;
     	font-weight: normal;
     	text-align: center;
+			background: rgba(26,90,125,0.5);
+	    color: #0dcebd;
+	    margin: 0 -30px 10px;
+	    line-height: 40px;    	
     }
     small{
     	display: block;
