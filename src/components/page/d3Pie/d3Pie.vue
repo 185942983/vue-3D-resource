@@ -84,13 +84,16 @@
 	  				})
 	  				.attr('text-anchor', 'middle')
 	  				.attr('font-size', '12px')	
+						.style('fill', '#fff')
 	  				.text(d => {
 	  					let percent = Number(d.value) / d3.sum(this.basicPieData, _d => _d[1]) * 100
 	  					return percent.toFixed(1) + '%'
 	  				})
 	  		//添加链接弧外文字的直线元素
 	  		arcs.append('line')
-	  				.attr('stroke', 'black')
+	  				.attr('stroke', (d,i) => {
+							return this.color(i)
+						})
 	  				.attr('x1', d => { return arc.centroid(d)[0] * 2 })
 	  				.attr('y1', d => { return arc.centroid(d)[1] * 2 })
 	  				.attr('x2', d => { return arc.centroid(d)[0] * 2.2 })
@@ -104,6 +107,9 @@
 	  				})
 	  				.attr('text-anchor', 'middle')
 	  				.attr('font-size', '12px')	
+						.style('fill', (d,i) => {
+							return this.color(i)
+						})
 	  				.text(d => d.data[0])	
 	  	},
 	  	initRingPie() {
@@ -155,13 +161,16 @@
 	  				})
 	  				.attr('text-anchor', 'middle')
 	  				.attr('font-size', '12px')	
+						.style('fill', '#fff')
 	  				.text(d => {
 	  					let percent = Number(d.value) / d3.sum(this.basicPieData, _d => _d[1]) * 100
 	  					return percent.toFixed(1) + '%'
 	  				})
 	  		//添加链接弧外文字的直线元素
 	  		arcs.append('line')
-	  				.attr('stroke', 'black')
+	  				.attr('stroke', (d,i) => {
+	  					return this.color(i)
+	  				})
 	  				.attr('x1', d => { return arc.centroid(d)[0] * 1.25 })
 	  				.attr('y1', d => { return arc.centroid(d)[1] * 1.25 })
 	  				.attr('x2', d => { return arc.centroid(d)[0] * 1.4 })
@@ -175,6 +184,9 @@
 	  				})
 	  				.attr('text-anchor', 'middle')
 	  				.attr('font-size', '12px')	
+						.style('fill', (d,i) => {
+							return this.color(i)
+						})
 	  				.text(d => d.data[0])		  		
 	  	},
 	  	initNormalPie() {
@@ -228,7 +240,9 @@
 											})
 	  		//添加链接弧外文字的直线元素
 	  		arcs.append('polyline')
-	  				.attr('stroke', 'black')
+	  				.attr('stroke', (d,i) => {
+	  					return this.color(i)
+	  				})
 	  				.attr('fill', 'transparent')
 	  				.attr('points', d => { 
 	  						return arc.centroid(d)[0] * 2 + ',' + arc.centroid(d)[1] * 2 + " " +
@@ -243,7 +257,10 @@
 	  						return 'translate('+ x +',' + y +')'
 	  				})
 	  				.attr('text-anchor', 'middle')
-	  				.attr('font-size', '12px')	
+	  				.attr('font-size', '12px')
+						.style('fill', (d,i)=>{
+							return this.color(i)
+						})
 	  				.text(d => d.data[0])		 
 	  		//添加弧的路径元素
 	  		arcs.append('path')
@@ -267,6 +284,7 @@
 	  				})
 	  				.attr('text-anchor', 'middle')
 	  				.attr('font-size', '12px')	
+						.style('fill', '#fff')	
 	  				.text(d => {
 	  					let percent = Number(d.value) / d3.sum(this.basicPieData, _d => _d[1]) * 100
 	  					return percent.toFixed(1) + '%'
