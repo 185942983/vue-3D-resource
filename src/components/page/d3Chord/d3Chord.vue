@@ -189,7 +189,7 @@
 	  											.append('path')
 	  											.attr('class', 'link')
 	  											.style('fill', 'none')
-	  											.style('stroke', '#409EFF')
+	  											.style('stroke', '#AFD279')
 	  											.attr('d', d=> {return this.linkVertical(d)})
 
 
@@ -205,8 +205,8 @@
 	  			node.append('circle')
 	  					.attr('r', 4.5)
 	  					.attr('cursor', 'pointer')
-	  					.style('stroke', '#409EFF')
-	  					.style('fill', '#fff')
+	  					.style('stroke', '#AFD279')
+	  					.style('fill', '#A7E2CB')
 	  					.attr('class', d=>{
 	  						return d.children?'parentNode': ''
 	  					})
@@ -289,9 +289,9 @@
 	  		// 计算新的树布局
 	  		const nodes = treeData.descendants()
 	  		const links = treeData.descendants().slice(1)
-	  		// 每层之间间隔180
+	  		// 每层之间间隔200
 	  		nodes.forEach(d => {
-	  			d.y = d.depth*180
+	  			d.y = d.depth*200
 	  		})
 	  		// *****************节点部分****************
 	  		let node = this.treeSvg.selectAll('g.node')
@@ -309,10 +309,10 @@
 	  		nodeEnter.append('circle')
 	  						 .attr('class', 'node')
 	  						 .attr('r', 1e-6)
-	  						 .style('stroke', 'steelblue')
+	  						 .style('stroke', '#EAD9F2')
 	  						 .style('stroke-width', '3px')
 	  						 .style('fill', d => {
-		  							return d._children? 'lightsteelblue': '#fff'
+		  							return d._children? '#6A97CD': '#fff'
 		  					 })
 		  	// 为节点添加标签
 		  	nodeEnter.append('text')
@@ -335,9 +335,9 @@
 		  						})
 		  	// 更新节点属性和样式
 		  	nodeUpdate.selectAll('circle.node')
-		  						.attr('r', 10)
+		  						.attr('r', 8)
 		  						.style('fill', d=>{
-		  							return d._children?'lightsteelblue': '#fff'
+		  							return d._children?'#6A97CD': '#fff'
 		  						})
 		  						.attr('cursor', 'pointer')
 		  	// 删除任何exit节点
@@ -361,7 +361,7 @@
  		    											.insert('path', 'g')
  		    											.attr('class', 'link')
  		    											.style('fill', 'none')
- 		    											.style('stroke', '#ccc')
+ 		    											.style('stroke', '#EAD9F2')
  		    											.style('stroke-width', '2px')
  		    											.attr('d', d=>{
 																const o = {x: source.x0 ,y: source.y0 }
@@ -409,19 +409,19 @@
 <style lang="less" scoped>
 	.chart-container{
     h3{
-    	font-size: 1rem;
+    	font-size: 0.8rem;
     	font-weight: normal;
-    	text-align: center;
-    	background: rgba(26,90,125,0.5);
+    	background: rgba(12,39,92,0.6);
 	    color: #0dcebd;
 	    margin: 0 -30px 10px;
-	    line-height: 40px;
+	    line-height: 36px;
+	    padding-left: 20px;
     }
     .chart{
     	height: 300px;
     }
     .chart1{
-    	height: 500px;
+    	height: 400px;
     }
     .el-row {
     	margin-bottom: 20px;

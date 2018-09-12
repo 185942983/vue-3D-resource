@@ -291,13 +291,13 @@
 <style lang="less" scoped>
 	.pie-container{
     h3{
-    	font-size: 1rem;
+    		font-size: 0.8rem;
     	font-weight: normal;
-    	text-align: center;
-			background: rgba(26,90,125,0.5);
+    	background: rgba(12,39,92,0.6);
 	    color: #0dcebd;
 	    margin: 0 -30px 10px;
-	    line-height: 40px;    	
+	    line-height: 36px;
+	    padding-left: 20px;
     }
     small{
     	display: block;
